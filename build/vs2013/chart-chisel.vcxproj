@@ -97,7 +97,7 @@
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\message_sequence_chart.cpp" />
     <ClCompile Include="..\..\src\polygon\polygon.cpp" />
-    <ClCompile Include="..\..\src\token_stream.cpp" />
+    <ClCompile Include="..\..\src\tokenizer.cpp" />
     <ClCompile Include="..\..\src\vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -112,7 +112,7 @@
     <ClInclude Include="..\..\src\polygon\span_extents.h" />
     <ClInclude Include="..\..\src\polygon\subpixel.h" />
     <ClInclude Include="..\..\src\polygon\vector2d.h" />
-    <ClInclude Include="..\..\src\token_stream.h" />
+    <ClInclude Include="..\..\src\tokenizer.h" />
     <ClInclude Include="..\..\src\vector2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

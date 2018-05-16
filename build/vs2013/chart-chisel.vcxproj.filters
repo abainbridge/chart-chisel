@@ -4,17 +4,16 @@
     <ClCompile Include="..\..\src\antialiased_draw.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\message_sequence_chart.cpp" />
-    <ClCompile Include="..\..\src\token_stream.cpp" />
     <ClCompile Include="..\..\src\vector2.cpp" />
     <ClCompile Include="..\..\src\polygon\polygon.cpp">
       <Filter>polygon</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\tokenizer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\antialiased_draw.h" />
     <ClInclude Include="..\..\src\main.h" />
     <ClInclude Include="..\..\src\message_sequence_chart.h" />
-    <ClInclude Include="..\..\src\token_stream.h" />
     <ClInclude Include="..\..\src\vector2.h" />
     <ClInclude Include="..\..\src\polygon\clip_rectangle.h">
       <Filter>polygon</Filter>
@@ -40,6 +39,7 @@
     <ClInclude Include="..\..\src\polygon\vector2d.h">
       <Filter>polygon</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\tokenizer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="polygon">

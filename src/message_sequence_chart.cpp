@@ -3,7 +3,7 @@
 // Project headers
 #include "antialiased_draw.h"
 #include "main.h"
-#include "token_stream.h"
+#include "tokenizer.h"
 
 // Deadfrog headers
 #include "df_bitmap.h"
@@ -32,13 +32,13 @@ static char *StringDup(char const *str)
 }
 
 
-static void ReportParseError(TokenStream *ts, char const *expected, char const *got)
+static void ReportParseError(Tokenizer *ts, char const *expected, char const *got)
 {
     FatalError("Line %d\n\nExpected '%s' got '%s'", ts->m_currentLineNum, expected, got);
 }
 
 
-static void TokenMustBe(TokenStream *ts, char const *got, char const *expected)
+static void TokenMustBe(Tokenizer *ts, char const *got, char const *expected)
 {
     if (stricmp(expected, got) != 0) {
         ReportParseError(ts, expected, got);
@@ -46,7 +46,7 @@ static void TokenMustBe(TokenStream *ts, char const *got, char const *expected)
 }
 
 
-static bool ReadKeyValuePair(TokenStream *ts, char **key, char **value)
+static bool ReadKeyValuePair(Tokenizer *ts, char **key, char **value)
 {
     char *tok = ts->GetToken();
     if (*tok == NULL || !isalpha(tok[0])) {
@@ -126,7 +126,7 @@ static bool ParseColour(char *str, DfColour *col)
 
 
 // Assumes the opening '[' has already been read. Reads until the closing ']'.
-static bool ReadParameters(TokenStream *ts, Parameters *params)
+static bool ReadParameters(Tokenizer *ts, Parameters *params)
 {
     while (1) {
         char *key;
@@ -165,7 +165,7 @@ static bool ReadParameters(TokenStream *ts, Parameters *params)
 
 bool MessageSequenceChart::Load(char const *filename)
 {
-    TokenStream ts;
+    Tokenizer ts;
     if (!ts.Open(filename))
         FatalError("Couldn't open '%s'", filename);
 

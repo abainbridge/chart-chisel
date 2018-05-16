@@ -14,7 +14,7 @@
 // Project headers
 #include "antialiased_draw.h"
 #include "message_sequence_chart.h"
-#include "token_stream.h"
+#include "tokenizer.h"
 #include "vector2.h"
 
 
