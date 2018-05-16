@@ -14,6 +14,6 @@ For a long time, I've been a user of http://www.mcternan.me.uk/mscgen/. While it
 
 ## Design decisions
 
-Chart Chisel will only output PNG because the SVG problem is unfixable - different implementations will always likely to produce different rendering results.
+Chart Chisel will only output PNG because the SVG problem is unfixable - different implementations are always likely to produce different rendering results.
 
 As an experiement, the parser will be hand written instead of the Flex and Yacc system that mscgen uses. I suspect Flex and Yacc add more complexity than they remove.
