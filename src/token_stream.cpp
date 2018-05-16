@@ -11,19 +11,19 @@ TokenStream::TokenStream()
 {
     m_buf = NULL;
     m_bufEnd = NULL;
-
     m_tokenBufSize = 1024;
     m_tokenBuf = new char [m_tokenBufSize];
-
     m_resendCurrentToken = false;
+    m_currentLineNum = 1;
 }
 
 
 bool TokenStream::Open(char const *filename)
 {
     FILE *f = fopen(filename, "rb");
-    if (!f)
+    if (!f) {
         return false;
+    }
 
     fseek(f, 0, SEEK_END);
     int bufSize = ftell(f);
@@ -43,12 +43,15 @@ bool TokenStream::Open(char const *filename)
 
 bool TokenStream::IncPos(int amount)
 {
-    m_pos += amount;
+    for (int i = 0; i < amount; i++) {
+        m_pos++;
+        if (*m_pos == '\n')
+            m_currentLineNum++;
 
-    if (m_pos >= m_bufEnd)
-    {
-        m_pos = m_bufEnd;
-        return false;
+        if (m_pos >= m_bufEnd) {
+            m_pos = m_bufEnd;
+            return false;
+        }
     }
 
     return true;
@@ -59,8 +62,9 @@ bool TokenStream::IncPos(int amount)
 char *TokenStream::CopyToken(char const *startPos, char const *endPos)
 {
     int len = endPos - startPos;
-    if (len <= 0)
+    if (len <= 0) {
         return NULL;
+    }
     memcpy(m_tokenBuf, startPos, len);
     m_tokenBuf[len] = '\0';
     return m_tokenBuf;

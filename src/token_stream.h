@@ -28,6 +28,8 @@ private:
     char *GetChar();
 
 public:
+    int m_currentLineNum;
+
     TokenStream();
     bool Open(char const *filename);
     char *GetToken();

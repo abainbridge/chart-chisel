@@ -7,6 +7,7 @@
 
 // Deadfrog headers
 #include "df_font.h"
+#include "df_message_dialog.h"
 #include "df_time.h"
 #include "df_window.h"
 
@@ -17,17 +18,37 @@
 #include "vector2.h"
 
 
+#define APP_NAME "Chart Chisel"
+
+
+bool g_interactiveMode = true;
+
+
 void FatalError(char const *fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt);
-    vprintf(fmt, ap);
+
+    if (g_interactiveMode) {
+        char buf[2048] = "ERROR:\n\n";
+        vsnprintf(buf + 8, sizeof(buf)-9, fmt, ap);
+        buf[sizeof(buf) - 1] = '\0';
+        MessageDialog(APP_NAME " Error", buf, MsgDlgTypeOk);
+    }
+    else {
+        va_list ap;
+        va_start(ap, fmt);
+        vprintf(fmt, ap);
+    }
+
+    exit(-1);
 }
 
 
 int main(int argc, char *argv[])
 {
-    char const *filename = "../../message_sequence_charts/add_with_data.msc";
+    char const *filename = "../../message_sequence_charts/hello.msc";
+//    char const *filename = "../../message_sequence_charts/add_with_data.msc";
     if (argc == 2) {
         filename = argv[1];
     }
@@ -41,7 +62,7 @@ int main(int argc, char *argv[])
     // Setup the window
     int width, height;
     GetDesktopRes(&width, &height);
-    CreateWin(1200, height - 100, WT_WINDOWED, "Chart Chisel");
+    CreateWin(1200, height - 100, WT_WINDOWED, APP_NAME);
     BitmapClear(g_window->bmp, g_colourWhite);
 
     // Continue to display the window until the user presses escape or clicks the close icon

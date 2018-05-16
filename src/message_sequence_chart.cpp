@@ -2,6 +2,7 @@
 
 // Project headers
 #include "antialiased_draw.h"
+#include "main.h"
 #include "token_stream.h"
 
 // Deadfrog headers
@@ -22,7 +23,7 @@ MessageSequenceChart::MessageSequenceChart()
 }
 
 
-char *StringDup(char const *str)
+static char *StringDup(char const *str)
 {
     int len = strlen(str) + 1;
     char *rv = new char[len];
@@ -31,31 +32,43 @@ char *StringDup(char const *str)
 }
 
 
-static bool ReadKeyValuePair(TokenStream *ts, char **_key, char **_value)
+static void ReportParseError(TokenStream *ts, char const *expected, char const *got)
+{
+    FatalError("Line %d\n\nExpected '%s' got '%s'", ts->m_currentLineNum, expected, got);
+}
+
+
+static void TokenMustBe(TokenStream *ts, char const *got, char const *expected)
+{
+    if (stricmp(expected, got) != 0) {
+        ReportParseError(ts, expected, got);
+    }
+}
+
+
+static bool ReadKeyValuePair(TokenStream *ts, char **key, char **value)
 {
     char *tok = ts->GetToken();
     if (*tok == NULL || !isalpha(tok[0])) {
         return false;
     }
-    *_key = StringDup(tok);
+    *key = StringDup(tok);
 
     tok = ts->GetToken();
-    if (stricmp(tok, "=") != 0) {
-        return false;
-    }
+    TokenMustBe(ts, tok, "=");
 
     tok = ts->GetToken();
     if (tok[0] == '"') {
         tok++;
         char *lastChar = tok + strlen(tok) - 1;
         if (*lastChar != '"') {
-            delete[] *_key;
-            *_key = NULL;
+            delete[] *key;
+            *key = NULL;
             return false;
         }
         *lastChar = '\0';
     }
-    *_value = StringDup(tok);
+    *value = StringDup(tok);
     return true;
 }
 
@@ -142,7 +155,7 @@ static bool ReadParameters(TokenStream *ts, Parameters *params)
             break;
         }
         if (stricmp(tok, ",") != 0) {
-            return false;
+            ReportParseError(ts, ",", tok);
         }
     }
 
@@ -154,16 +167,15 @@ bool MessageSequenceChart::Load(char const *filename)
 {
     TokenStream ts;
     if (!ts.Open(filename))
-        return false;
+        FatalError("Couldn't open '%s'", filename);
 
-    if (stricmp(ts.GetToken(), "msc") != 0)
-        return false;
-
-    if (stricmp(ts.GetToken(), "{") != 0)
-        return false;
+    char *tok = ts.GetToken();
+    TokenMustBe(&ts, tok, "msc");
+    tok = ts.GetToken();
+    TokenMustBe(&ts, tok, "{");
 
     while (1) {
-        char *tok = ts.GetToken();
+        tok = ts.GetToken();
         
         if (stricmp(tok, "}") == 0) {
             break;
@@ -171,9 +183,7 @@ bool MessageSequenceChart::Load(char const *filename)
 
         else if (stricmp(tok, "width") == 0) {
             tok = ts.GetToken();
-            if (stricmp(tok, "=") != 0) {
-                return false;
-            }
+            TokenMustBe(&ts, tok, "=");
             char const *val = ts.GetToken();
             int intVal = strtol(val, NULL, 10);
             if (intVal < 40 || intVal > 9000) {
@@ -181,11 +191,8 @@ bool MessageSequenceChart::Load(char const *filename)
             }
 
             m_pixelWidth = intVal;
-
             tok = ts.GetToken();
-            if (stricmp(tok, ";") != 0) {
-                return false;
-            }
+            TokenMustBe(&ts, tok, ";");
         }
 
         else if (stricmp(tok, "title") == 0) {
@@ -198,9 +205,7 @@ bool MessageSequenceChart::Load(char const *filename)
             delete[] key;
             SplitAtNewLines(val, &m_title);
             tok = ts.GetToken();
-            if (stricmp(tok, ";") != 0) {
-                return false;
-            }
+            TokenMustBe(&ts, tok, ";");
         }
 
         else if (m_entities.size() == 0) {
@@ -220,10 +225,8 @@ bool MessageSequenceChart::Load(char const *filename)
                 if (stricmp(tok, ";") == 0) {
                     break;
                 }
-                if (stricmp(tok, ",") != 0) {
-                    return false;
-                }
 
+                TokenMustBe(&ts, tok, ",");
                 tok = ts.GetToken();
             }
         }
@@ -245,7 +248,7 @@ bool MessageSequenceChart::Load(char const *filename)
             else {
                 arc->m_entities[0] = GetEntityByName(tok);
                 if (!arc->m_entities[0]) {
-                    return false;
+                    ReportParseError(&ts, "entity name", tok);
                 }
 
                 tok = ts.GetToken();
