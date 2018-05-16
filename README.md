@@ -1,6 +1,23 @@
 # Chart Chisel
 A tool for drawing message sequence charts.
 
+Takes a input text file that looks like this:
+
+```
+entities:
+  a, "Alice"
+  b, "Bob"
+  
+arcs:
+  a -> b, "Alice says hello"
+  b -> a, "Bob says hi"
+```
+And generates a PNG file that looks like this:
+
+![Example output](https://github.com/abainbridge/chart-chisel/blob/master/examples/hello.png)
+
+## Motivation
+
 For a long time, I've been a user of http://www.mcternan.me.uk/mscgen/. While it is a great program it has a few limitations.
 
 * It hasn't been updated since 2011.
