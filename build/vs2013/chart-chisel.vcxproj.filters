@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\src\antialiased_draw.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\message_sequence_chart.cpp" />
+    <ClCompile Include="..\..\src\token_stream.cpp" />
+    <ClCompile Include="..\..\src\vector2.cpp" />
+    <ClCompile Include="..\..\src\polygon\polygon.cpp">
+      <Filter>polygon</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\antialiased_draw.h" />
+    <ClInclude Include="..\..\src\main.h" />
+    <ClInclude Include="..\..\src\message_sequence_chart.h" />
+    <ClInclude Include="..\..\src\token_stream.h" />
+    <ClInclude Include="..\..\src\vector2.h" />
+    <ClInclude Include="..\..\src\polygon\clip_rectangle.h">
+      <Filter>polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\polygon\coverage_table.h">
+      <Filter>polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\polygon\number_formats.h">
+      <Filter>polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\polygon\polygon.h">
+      <Filter>polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\polygon\polygon_unroll_macros.h">
+      <Filter>polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\polygon\span_extents.h">
+      <Filter>polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\polygon\subpixel.h">
+      <Filter>polygon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\polygon\vector2d.h">
+      <Filter>polygon</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="polygon">
+      <UniqueIdentifier>{18b79cf4-8c4c-4c78-8773-698e4f72db57}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
