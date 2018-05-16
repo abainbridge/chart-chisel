@@ -1,0 +1,8 @@
+msc {
+  width=600;
+  a [label="Alice"],
+  b [label="Bob"];
+
+  a => b [label="Alice says hello"];
+  b => a [label="Bob says hi"];
+}
