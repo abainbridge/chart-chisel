@@ -1,4 +1,4 @@
-# chart-chisel
+# Chart Chisel
 A tool for drawing message sequence charts.
 
 For a long time, I've been a user of http://www.mcternan.me.uk/mscgen/. While it is a great program it has a few limitations.
