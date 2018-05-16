@@ -10,7 +10,7 @@ For a long time, I've been a user of http://www.mcternan.me.uk/mscgen/. While it
 * It puts arrow labels too close to the arrow. As a result, text longer than the arrow covers the top half of the arrow head.
 * I'd like a mode where the chart is displayed, rather than having to open it an an external viewer.
 * When displaying the chart, it should continue to monitor the source file for changes. When a change is detected, the chart should be redrawn.
-* The syntax of the .msc files is too verbose. MsGenny (https://github.com/sverweij/mscgen_js/blob/master/wikum/msgenny.md) seems like an improvement but lacks support for setting text and background colours. I hope it can be extended to provide the best features of both.
+* The syntax of the .msc files is too verbose. MsGenny (https://github.com/sverweij/mscgen_js/blob/master/wikum/msgenny.md) seems like an improvement but lacks support for setting text and background colours. The best features of both should be combined.
 
 ## Design decisions
 
