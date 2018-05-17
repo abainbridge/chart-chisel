@@ -64,7 +64,7 @@ static bool ReadKeyValuePair(Tokenizer *ts, char **key, char **value)
         if (*lastChar != '"') {
             delete[] *key;
             *key = NULL;
-            return false;
+            FatalError("Line %d\n\nUnmatched double quote.", ts->m_currentLineNum);
         }
         *lastChar = '\0';
     }
@@ -141,13 +141,16 @@ static bool ReadParameters(Tokenizer *ts, Parameters *params)
         }
         else if (stricmp(key, "textbgcolour") == 0) {
             delete[] key;
-            if (!ParseColour(val, &params->m_bgColour))
+            if (!ParseColour(val, &params->m_bgColour)) {
+                FatalError("Line %d\n\nInvalid colour value", ts->m_currentLineNum);
                 return false;
+            }
         }
         else {
+            FatalError("Line %d\n\nUnrecognized parameter '%s'",
+                ts->m_currentLineNum, key);
             delete[] key;
             delete[] val;
-            return false;
         }
 
         char *tok = ts->GetToken();
@@ -187,7 +190,8 @@ bool MessageSequenceChart::Load(char const *filename)
             char const *val = ts.GetToken();
             int intVal = strtol(val, NULL, 10);
             if (intVal < 40 || intVal > 9000) {
-                return false;
+                FatalError("Line %d\n\nWidth value out of range. Should be between "
+                    "40 and 9000. Was '%s'", ts.m_currentLineNum, val);
             }
 
             m_pixelWidth = intVal;
@@ -260,13 +264,13 @@ bool MessageSequenceChart::Load(char const *filename)
                     arc->m_type = Arc::TYPE_BOX;
                 }
                 else {
-                    return false;
+                    ReportParseError(&ts, "<arc type>", tok);
                 }
 
                 tok = ts.GetToken();
                 arc->m_entities[1] = GetEntityByName(tok);
                 if (!arc->m_entities[1]) {
-                    return false;
+                    FatalError("Line %d\n\nUnknown entity name '%s'", ts.m_currentLineNum, tok);
                 }
             }
 
@@ -282,8 +286,8 @@ bool MessageSequenceChart::Load(char const *filename)
                     arc = new Arc;
                     arc->m_type = Arc::TYPE_UNSPACER;
                 }
-                else if (stricmp(tok, ";") != 0) {
-                    return false;
+                else {
+                    TokenMustBe(&ts, ";", tok);
                 }
             }
 
