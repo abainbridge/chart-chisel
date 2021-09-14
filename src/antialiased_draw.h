@@ -2,11 +2,11 @@
 #define INCLUDED_ANTIALIASED_DRAW_H
 
 
+#include "df_bitmap.h"
 #include "df_colour.h"
 #include "vector2.h"
 
 
-struct DfBitmap;
 class PolygonData;
 class PolygonFiller;
 

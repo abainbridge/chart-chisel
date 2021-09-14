@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 // Deadfrog headers
+#include "fonts/df_mono.h"
 #include "df_bmp.h"
 #include "df_font.h"
 #include "df_message_dialog.h"
@@ -63,7 +64,7 @@ int main(int argc, char *argv[])
 {
 //     char *filename = "../../message_sequence_charts/hello.msc";
 //     g_interactiveMode = false;
-   char *filename = "../../message_sequence_charts/add_with_data.msc";
+    char *filename = "../../message_sequence_charts/add_with_data.msc";
     if (argc != 3) {
         PrintUsageAndExit();
     }
@@ -77,7 +78,7 @@ int main(int argc, char *argv[])
     }
     filename = argv[2];
 
-    g_defaultFont = FontCreate("Arial", 10, 7);
+    g_defaultFont = LoadFontFromMemory(deadfrog_mono_7x13, sizeof(deadfrog_mono_7x13));
     g_antialiasedDraw = new AntialiasedDraw;
 
     MessageSequenceChart msc;
@@ -96,11 +97,11 @@ int main(int argc, char *argv[])
         double lastTime = GetRealTime();
         while (!g_window->windowClosed && !g_input.keys[KEY_ESC])
         {
-            InputManagerAdvance();
+            InputPoll();
             BitmapClear(bmp, g_colourWhite);
             msc.Render(bmp);
             UpdateWin();
-            SleepMillisec(4);
+            WaitVsync();
         }
     }
     else {
